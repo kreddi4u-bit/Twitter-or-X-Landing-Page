@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chirp — Timeline</title>
+<meta name="description" content="Chirp — a Twitter timeline clone.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- LEFT NAV -->
+  <nav class="side-nav" aria-label="Primary">
+    <a href="#" class="brand">
+      <i class="bi bi-wind brand-icon" aria-hidden="true"></i>
+      <span class="brand-word">Chirp</span>
+    </a>
+
+    <ul class="nav-list">
+      <li><button class="nav-item is-active" data-tab="home"><i class="bi bi-house-door-fill"></i><span>Home</span></button></li>
+      <li><button class="nav-item" data-tab="explore"><i class="bi bi-hash"></i><span>Explore</span></button></li>
+      <li><button class="nav-item" data-action="open-notifications"><i class="bi bi-bell"></i><span>Notifications</span></button></li>
+      <li><button class="nav-item" data-action="open-profile"><i class="bi bi-person"></i><span>Profile</span></button></li>
+      <li><button class="nav-item" data-tab="settings"><i class="bi bi-gear"></i><span>Settings</span></button></li>
+    </ul>
+
+    <button class="btn-compose" data-action="open-composer">
+      <i class="bi bi-feather"></i>
+      <span>Chirp</span>
+    </button>
+
+    <div class="mini-profile">
+      <span class="avatar" style="--av:#E8590C">KR</span>
+      <div class="mini-profile-text">
+        <strong>Kaylan Reddi</strong>
+        <span>@kaylanbuilds</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CENTER COLUMN -->
+  <main class="timeline" id="main">
+
+    <!-- HOME TAB -->
+    <section class="tab-panel is-active" id="tab-home" aria-labelledby="home-heading">
+      <header class="panel-header">
+        <h1 id="home-heading">Home</h1>
+      </header>
+
+      <div class="filter-banner" id="filterBanner" hidden>
+        <span id="filterText"></span>
+        <button id="clearFilter" class="link-btn">Clear</button>
+      </div>
+
+      <form class="composer" id="inlineComposer">
+        <span class="avatar" style="--av:#E8590C">KR</span>
+        <div class="composer-body">
+          <textarea id="inlineText" maxlength="280" placeholder="What's chirping?" rows="2" aria-label="Compose a chirp"></textarea>
+          <div class="composer-footer">
+            <span class="char-count" id="inlineCount">280</span>
+            <button type="submit" class="btn-primary" disabled>Chirp</button>
+          </div>
+        </div>
+      </form>
+
+      <ul class="feed" id="feed" aria-label="Timeline"></ul>
+    </section>
+
+    <!-- EXPLORE TAB -->
+    <section class="tab-panel" id="tab-explore" aria-labelledby="explore-heading">
+      <header class="panel-header">
+        <h1 id="explore-heading">Explore</h1>
+      </header>
+
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input type="search" id="exploreSearch" placeholder="Search tags" aria-label="Search tags">
+      </div>
+
+      <h2 class="section-label">Trending now</h2>
+      <ol class="trend-list" id="trendList"></ol>
+    </section>
+
+    <!-- SETTINGS TAB -->
+    <section class="tab-panel" id="tab-settings" aria-labelledby="settings-heading">
+      <header class="panel-header">
+        <h1 id="settings-heading">Settings</h1>
+      </header>
+
+      <div class="settings">
+
+        <section class="setting-group" aria-labelledby="g-appearance">
+          <h2 id="g-appearance">Appearance</h2>
+
+          <div class="setting-row stack">
+            <span class="setting-label">Theme</span>
+            <div class="segmented" role="radiogroup" aria-label="Theme">
+              <button type="button" role="radio" data-theme-choice="light"><i class="bi bi-sun"></i> Light</button>
+              <button type="button" role="radio" data-theme-choice="dark"><i class="bi bi-moon-stars"></i> Dark</button>
+              <button type="button" role="radio" data-theme-choice="system"><i class="bi bi-display"></i> System</button>
+            </div>
+          </div>
+
+          <div class="setting-row stack">
+            <span class="setting-label">Text size</span>
+            <div class="segmented" role="radiogroup" aria-label="Text size">
+              <button type="button" role="radio" data-font-choice="small">Small</button>
+              <button type="button" role="radio" data-font-choice="medium">Medium</button>
+              <button type="button" role="radio" data-font-choice="large">Large</button>
+            </div>
+          </div>
+
+          <label class="setting-row">
+            <span class="setting-label">Reduce motion</span>
+            <input type="checkbox" class="switch" id="reduceMotion">
+          </label>
+        </section>
+
+        <section class="setting-group" aria-labelledby="g-sound">
+          <h2 id="g-sound">Sound</h2>
+
+          <label class="setting-row">
+            <span class="setting-label">Sound effects</span>
+            <input type="checkbox" class="switch" id="soundEnabled">
+          </label>
+
+          <label class="setting-row">
+            <span class="setting-label">Mute everything</span>
+            <input type="checkbox" class="switch" id="muteAll">
+          </label>
+
+          <div class="setting-row stack">
+            <label class="setting-label" for="volume">Volume</label>
+            <div class="range-wrap">
+              <i class="bi bi-volume-down" aria-hidden="true"></i>
+              <input type="range" id="volume" min="0" max="100" step="1">
+              <i class="bi bi-volume-up" aria-hidden="true"></i>
+              <output id="volumeOut" for="volume">70%</output>
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <span class="setting-label">Hear how it sounds</span>
+            <button type="button" class="btn-secondary" id="testSound"><i class="bi bi-play-fill"></i> Play test sound</button>
+          </div>
+        </section>
+
+        <section class="setting-group" aria-labelledby="g-media">
+          <h2 id="g-media">Media</h2>
+
+          <label class="setting-row">
+            <span class="setting-label">Show images in chirps</span>
+            <input type="checkbox" class="switch" id="showImages">
+          </label>
+
+          <label class="setting-row">
+            <span class="setting-label">Autoplay videos</span>
+            <input type="checkbox" class="switch" id="autoplayVideo">
+          </label>
+        </section>
+
+        <section class="setting-group" aria-labelledby="g-data">
+          <h2 id="g-data">Data</h2>
+          <div class="setting-row">
+            <span class="setting-label">Reset timeline to the starter chirps</span>
+            <button type="button" class="btn-danger" id="resetData">Reset chirps</button>
+          </div>
+        </section>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- RIGHT RAIL -->
+  <aside class="right-rail" aria-label="Trends and suggestions">
+    <div class="rail-card">
+      <h2>Trending for you</h2>
+      <ol class="trend-list compact" id="railTrendList"></ol>
+    </div>
+    <div class="rail-card">
+      <h2>About this clone</h2>
+      <p class="rail-note">Chirp is a Twitter-timeline clone built with plain HTML, CSS and JavaScript. Chirps, likes and settings are saved in your browser.</p>
+    </div>
+  </aside>
+
+</div>
+
+<!-- MOBILE BOTTOM BAR -->
+<nav class="bottom-bar" aria-label="Primary mobile">
+  <button class="bottom-item is-active" data-tab="home" aria-label="Home"><i class="bi bi-house-door-fill"></i></button>
+  <button class="bottom-item" data-tab="explore" aria-label="Explore"><i class="bi bi-hash"></i></button>
+  <button class="bottom-item bottom-compose" data-action="open-composer" aria-label="New chirp"><i class="bi bi-feather"></i></button>
+  <button class="bottom-item" data-action="open-notifications" aria-label="Notifications"><i class="bi bi-bell"></i></button>
+  <button class="bottom-item" data-tab="settings" aria-label="Settings"><i class="bi bi-gear"></i></button>
+</nav>
+
+<!-- COMPOSE MODAL -->
+<div class="modal-overlay" id="composeOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="composeTitle">
+    <header class="modal-header">
+      <button class="icon-btn" id="composeClose" aria-label="Close">
+        <i class="bi bi-x-lg"></i>
+      </button>
+      <span id="composeTitle" class="modal-title">New chirp</span>
+      <button class="btn-primary btn-sm" id="composeSubmit" disabled>Chirp</button>
+    </header>
+    <div class="modal-body">
+      <span class="avatar" style="--av:#E8590C">KR</span>
+      <textarea id="composeText" maxlength="280" placeholder="What's chirping?" rows="5" aria-label="Compose a chirp"></textarea>
+    </div>
+    <footer class="modal-footer">
+      <div class="modal-toolbar">
+        <i class="bi bi-image" aria-hidden="true"></i>
+        <i class="bi bi-emoji-smile" aria-hidden="true"></i>
+        <i class="bi bi-geo-alt" aria-hidden="true"></i>
+      </div>
+      <span class="char-count" id="composeCount">280</span>
+    </footer>
+  </div>
+</div>
+
+<!-- STUB MODAL (Notifications / Profile) -->
+<div class="modal-overlay" id="stubOverlay" hidden>
+  <div class="modal modal-sm" role="dialog" aria-modal="true" aria-labelledby="stubTitle">
+    <header class="modal-header">
+      <button class="icon-btn" id="stubClose" aria-label="Close">
+        <i class="bi bi-x-lg"></i>
+      </button>
+      <span id="stubTitle" class="modal-title">—</span>
+      <span style="width:32px"></span>
+    </header>
+    <div class="modal-body stub-body">
+      <p id="stubText"></p>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+
